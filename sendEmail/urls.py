@@ -10,8 +10,8 @@ router = routers.DefaultRouter()
 router.register(r'/viewAllstudents', views.getAllstudentsinView)
 
 urlpatterns = [
-    path('_sendEmail',SendEmailView.as_view()),
-    path('_addstudent',addstudentsinView.as_view()),
+    path('/sendEmail',SendEmailView.as_view()),
+    path('/addstudent',addstudentsinView.as_view()),
     path('', include(router.urls))
     #path('_viewAllstudents',getAllstudentsinView.as_view())
 ]

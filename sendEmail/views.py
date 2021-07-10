@@ -24,12 +24,12 @@ def sendmail(subject, tolist, content):
     # The mail addresses and password
     from_address = 'bitsassignment111@gmail.com'
     from_pass = 'BitsPassword$1'
-    to_address = tolist  # from input parameter
+    to_address = tolist.split(',')  # from input parameter
 
     # Setup the MIME
     message = MIMEMultipart()
     message['From'] = from_address
-    message['To'] = ", ".join(to_address)
+    message['To'] = "," . join (to_address)
     message['Subject'] = subject  # from input parameter
 
     # The body and the attachments for the mail (if any - as of now, it is a plain mail)
@@ -44,9 +44,10 @@ def sendmail(subject, tolist, content):
     session.login(from_address, from_pass)
 
     text = message.as_string()
+    
     session.sendmail(from_address, to_address, text)
     session.quit()
-    print('Mail Sent to '+ to_address)
+    print('Mail Sent successfully')
     return
 
 class SendEmailView(GenericAPIView):
@@ -57,7 +58,7 @@ class SendEmailView(GenericAPIView):
         serializer = studentSerializer(data=request.data, context={'request': request})
 
         if serializer.is_valid():
-            print("request data is" + serializer.data.get('email'))
+            print("request data is " + serializer.data.get('email'))
             # I harcoded the data here please change accordingly
             sendmail('test Subjectmain code', serializer.data.get('email'), 'Test Contentx')
             return Response(serializer.data, status=status.HTTP_200_OK)
