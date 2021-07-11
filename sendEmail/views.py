@@ -62,10 +62,10 @@ class SendEmailView(GenericAPIView):
         if serializer.is_valid():
             print("request data is " + serializer.data.get('email'))
             # I harcoded the data here please change accordingly
-            sendmail('LMS Notifcation', serializer.data.get('email'), 'Notification For LMS Dashboard! added a quiz / assignments,etc')
+            sendmail('LMS Notifcation', serializer.data.get('email'), 'Notification For LMS Dashboard! added a Quiz')
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-class SendEmailViewCourse(GenericAPIView):
+class SendEmailViewModule(GenericAPIView):
 
     serializer_class = studentSerializer
 
@@ -75,7 +75,7 @@ class SendEmailViewCourse(GenericAPIView):
         if serializer.is_valid():
             print("request data is " + serializer.data.get('email'))
             # I harcoded the data here please change accordingly
-            sendmail('LMS Notifcation', serializer.data.get('email'), 'Notification For LMS Dashboard! added a New Course')
+            sendmail('LMS Notifcation', serializer.data.get('email'), 'Notification For LMS Dashboard! added a New Module')
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 class SendEmailAssignment(GenericAPIView):
@@ -88,7 +88,7 @@ class SendEmailAssignment(GenericAPIView):
         if serializer.is_valid():
             print("request data is " + serializer.data.get('email'))
             # I harcoded the data here please change accordingly
-            sendmail('LMS Notifcation', serializer.data.get('email'), 'Notification For LMS Dashboard! added a new assignment')
+            sendmail('LMS Notifcation', serializer.data.get('email'), 'Notification For LMS Dashboard! added a new Assignment')
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
