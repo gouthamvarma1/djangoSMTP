@@ -11,6 +11,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import logging
+from smtp.settings import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT,EMAIL_HOST
 # Create your views here.
 
 
@@ -22,14 +23,15 @@ def sendmail(subject, tolist, content):
     mail_content = content
 
     # The mail addresses and password
-    from_address = 'bitsassignment111@gmail.com'
-    from_pass = 'BitsPassword$1'
+    from_address = EMAIL_HOST_USER
+    from_pass = EMAIL_HOST_PASSWORD
     to_address = tolist.split(',')  # from input parameter
 
     # Setup the MIME
     message = MIMEMultipart()
     message['From'] = from_address
-    message['To'] = "," . join (to_address)
+    message['To'] = "," . join (to_address) 
+    print("," . join (to_address) )
     message['Subject'] = subject  # from input parameter
 
     # The body and the attachments for the mail (if any - as of now, it is a plain mail)
@@ -37,7 +39,7 @@ def sendmail(subject, tolist, content):
 
     # Create SMTP session for sending the mail
     # use gmail with port
-    session = smtplib.SMTP('smtp.gmail.com', 587)
+    session = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
     # enable security
     session.starttls()
     # login with mail_id and password
@@ -60,7 +62,33 @@ class SendEmailView(GenericAPIView):
         if serializer.is_valid():
             print("request data is " + serializer.data.get('email'))
             # I harcoded the data here please change accordingly
-            sendmail('test Subjectmain code', serializer.data.get('email'), 'Test Contentx')
+            sendmail('LMS Notifcation', serializer.data.get('email'), 'Notification For LMS Dashboard! added a quiz / assignments,etc')
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+class SendEmailViewCourse(GenericAPIView):
+
+    serializer_class = studentSerializer
+
+    def post(self, request):
+        serializer = studentSerializer(data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            print("request data is " + serializer.data.get('email'))
+            # I harcoded the data here please change accordingly
+            sendmail('LMS Notifcation', serializer.data.get('email'), 'Notification For LMS Dashboard! added a New Course')
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+class SendEmailAssignment(GenericAPIView):
+
+    serializer_class = studentSerializer
+
+    def post(self, request):
+        serializer = studentSerializer(data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            print("request data is " + serializer.data.get('email'))
+            # I harcoded the data here please change accordingly
+            sendmail('LMS Notifcation', serializer.data.get('email'), 'Notification For LMS Dashboard! added a new assignment')
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
