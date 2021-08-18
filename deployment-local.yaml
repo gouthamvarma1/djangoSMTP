@@ -1,0 +1,36 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: djangosmtp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: djangosmtp
+  template:
+    metadata:
+      labels:
+        app: djangosmtp
+    spec:
+      containers:
+        - name: djangosmtp
+          image: gouthamvarma1/djangosmtp
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      restartPolicy: Always
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: djangosmtp
+spec:
+  type: NodePort
+  ports:
+    - port: 3050
+      targetPort: 8000
+      protocol: TCP
+      nodePort: 30102
+  selector:
+    app: djangosmtp
